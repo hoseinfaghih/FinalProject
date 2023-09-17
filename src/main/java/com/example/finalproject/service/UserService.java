@@ -47,7 +47,7 @@ public class UserService {
         return ResponseEntity.ok(userRegisterResponse);
     }
 
-    public ResponseEntity<Object> login(LoginRequest loginRequest){
+    public ResponseEntity<Object> login(LoginRequest loginRequest) {
         authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -63,6 +63,7 @@ public class UserService {
                 .build()
         );
     }
+
     public User getByEmail(String email) {
         var user = repository.findByEmail(email);
         if (!user.isPresent()) {

@@ -3,7 +3,6 @@ package com.example.finalproject.config;
 import com.example.finalproject.security.AuthEntryPointJwt;
 import com.example.finalproject.security.AuthOncePerRequestFilter;
 import com.example.finalproject.service.UserDetailsServiceImpl;
-import com.example.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

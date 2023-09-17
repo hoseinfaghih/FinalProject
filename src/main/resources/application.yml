@@ -18,5 +18,5 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      secret-key: ReawF+IwL1bLscgeiyVFbikseTJkbC4OlVy20UAm28Ch2Yv03aY6mp8yO+bZCg2E
       expiration: 86400000

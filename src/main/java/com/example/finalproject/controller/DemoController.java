@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @GetMapping("/1")
-    public String ok (){
+    public String ok() {
         return "OK";
     }
 }
