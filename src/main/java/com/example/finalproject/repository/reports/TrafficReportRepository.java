@@ -1,4 +1,4 @@
-package com.example.finalproject.repository;
+package com.example.finalproject.repository.reports;
 
 import com.example.finalproject.model.reports.traffic.TrafficReport;
 import org.springframework.data.jpa.repository.JpaRepository;

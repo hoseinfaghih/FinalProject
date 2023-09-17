@@ -7,6 +7,7 @@ public enum ReportType {
     Police,
     SpeedHump,
     MapProblem,
+    RoadLocation,
     RoadIncident,
     Weather
 }
