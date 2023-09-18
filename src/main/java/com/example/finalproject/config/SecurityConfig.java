@@ -56,7 +56,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/user/**").permitAll()
+                                .requestMatchers("/report/add-report").hasAuthority("USER")
                                 .anyRequest().hasAuthority("ADMIN")
+
                 );
         http.authenticationProvider(authenticationProvider());
 
