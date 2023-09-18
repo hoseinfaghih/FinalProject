@@ -57,6 +57,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/user/**").permitAll()
                                 .requestMatchers("/report/add-report").hasAuthority("USER")
+                                .requestMatchers("report/all-reports").hasAuthority("ADMIN")
                                 .anyRequest().hasAuthority("ADMIN")
 
                 );

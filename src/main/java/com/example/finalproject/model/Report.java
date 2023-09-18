@@ -1,5 +1,8 @@
 package com.example.finalproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -33,7 +36,7 @@ public abstract class Report {
     Date expirationDate;
 
     @Column(name = "coordinates", columnDefinition = "geometry(Point,4326)")
-    Point Location;
+    Point location;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

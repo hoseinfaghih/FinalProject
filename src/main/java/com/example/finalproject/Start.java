@@ -79,6 +79,7 @@ public class Start implements CommandLineRunner {
 
         weatherReport.setIssueDate(now);
         weatherReport.setExpirationDate(futureDate);
+        weatherReport.setUser(user);
         weatherReportRepository.save(weatherReport);
     }
 }
