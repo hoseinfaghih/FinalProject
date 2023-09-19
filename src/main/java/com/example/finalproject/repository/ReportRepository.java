@@ -2,6 +2,7 @@ package com.example.finalproject.repository;
 
 import com.example.finalproject.model.Report;
 import jakarta.transaction.Transactional;
+import org.locationtech.jts.geom.LineString;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -43,4 +44,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Modifying
     @Query("UPDATE Report r SET r.approve = false WHERE r.id = :reportId")
     void disapproveReportById(Long reportId);
+
+    @Query("SELECT r FROM Report r WHERE ST_DWithin(r.location, :lineString,10,true) = true  AND r.approve = true AND r.expirationDate > :currentDate")
+    List<Report> findAliveAndApprovedReportsWithinLineString(LineString lineString,Date currentDate);
 }

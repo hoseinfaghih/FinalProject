@@ -2,7 +2,6 @@ package com.example.finalproject.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.locationtech.jts.geom.Point;
 
 import java.util.Date;
 

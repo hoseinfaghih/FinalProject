@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +34,7 @@ public class AdminController {
             @RequestParam(name = "approve", required = false) Boolean approve,
             @RequestParam(name = "alive", required = false) Boolean alive) {
 
-        List<ReportResponse> result = reportService.getFilteredReports(approve,alive);
+        List<ReportResponse> result = reportService.getFilteredReports(approve, alive);
         return ResponseEntity.ok(result);
     }
 

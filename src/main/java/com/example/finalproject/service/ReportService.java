@@ -65,15 +65,15 @@ public class ReportService {
             result = reportRepository.findByExpirationDateAfter(now);
         } else if (!approve && alive == null) {
             result = reportRepository.findByApproveFalse();
-        } else if (!approve  && !alive ) {
+        } else if (!approve && !alive) {
             result = reportRepository.findByApproveFalseAndExpirationDateBefore(now);
-        } else if (!approve  && alive ) {
+        } else if (!approve && alive) {
             result = reportRepository.findByApproveFalseAndExpirationDateAfter(now);
         } else if (approve && alive == null) {
             result = reportRepository.findByApproveTrue();
-        } else if (approve  && !alive) {
+        } else if (approve && !alive) {
             result = reportRepository.findByApproveTrueAndExpirationDateBefore(now);
-        } else if (approve && alive ) {
+        } else if (approve && alive) {
             result = reportRepository.findByApproveTrueAndExpirationDateAfter(now);
         }
 
