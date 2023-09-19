@@ -13,10 +13,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -57,29 +54,81 @@ public class ReportService {
         return false;
     }
 
-
-
     public List<ReportResponse> getAllReports() {
         List<Report> result = reportRepository.findAll();
         List<ReportResponse> realResult = new ArrayList<>();
-        for (Report report:result) {
+        for (Report report : result) {
             ReportResponse reportResponse = reportMapper.convertReportToReportResponse(report);
             realResult.add(reportResponse);
         }
         return realResult;
     }
 
-    public List<ReportResponse> getAllAliveReports (){
+    public List<ReportResponse> getAllAliveReports() {
         Date currentDate = new Date();
         List<Report> aliveReports = reportRepository.findByExpirationDateAfter(currentDate);
         List<ReportResponse> realResult = new ArrayList<>();
-        for (Report report:aliveReports) {
+        for (Report report : aliveReports) {
             ReportResponse reportResponse = reportMapper.convertReportToReportResponse(report);
             realResult.add(reportResponse);
         }
         return realResult;
     }
-    public double checkCamera (Long id){
-        return cameraReportRepository.findById(id).get().getLocation().getX();
+
+    public String approveReports(List<Long> reportIds) {
+        Map<String, List<Long>> result = new HashMap<>();
+        result.put("good", new ArrayList<>());
+        result.put("bad", new ArrayList<>());
+        for (Long id : reportIds) {
+            Optional<Report> report = reportRepository.findById(id);
+            if (report.isPresent()) {
+                reportRepository.approveReportById(id);
+                result.get("good").add(id);
+            } else {
+                result.get("bad").add(id);
+            }
+        }
+        return approveReportsResult(result);
+    }
+
+    public String disapproveReports(List<Long> reportIds) {
+        Map<String, List<Long>> result = new HashMap<>();
+        result.put("good", new ArrayList<>());
+        result.put("bad", new ArrayList<>());
+        for (Long id : reportIds) {
+            Optional<Report> report = reportRepository.findById(id);
+            if (report.isPresent()) {
+                reportRepository.disapproveReportById(id);
+                result.get("good").add(id);
+            } else {
+                result.get("bad").add(id);
+            }
+        }
+        return disapproveReportsResult(result);
+    }
+
+    private String approveReportsResult (Map<String,List<Long>> map){
+        StringBuilder responseBody = new StringBuilder("ids : ");
+        for (Long goodId:map.get("good")) {
+            responseBody.append(goodId.toString()).append(",");
+        }
+        responseBody.append(" \nwere good and approved!\nbut ids :");
+        for (Long goodId:map.get("bad")) {
+            responseBody.append(goodId.toString()).append(",");
+        }
+        responseBody.append(" \nwere bad and didn't exist");
+        return responseBody.toString();
+    }
+    private String disapproveReportsResult (Map<String,List<Long>> map){
+        StringBuilder responseBody = new StringBuilder("ids : ");
+        for (Long goodId:map.get("good")) {
+            responseBody.append(goodId.toString()).append(",");
+        }
+        responseBody.append(" \nwere good and disapproved!\nbut ids :");
+        for (Long goodId:map.get("bad")) {
+            responseBody.append(goodId.toString()).append(",");
+        }
+        responseBody.append(" \nwere bad and didn't exist");
+        return responseBody.toString();
     }
 }
