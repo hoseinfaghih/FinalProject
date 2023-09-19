@@ -154,4 +154,38 @@ public class ReportService {
         responseBody.append(" \nwere bad and didn't exist");
         return responseBody.toString();
     }
+
+    public Boolean advanceExpirationTime(Long reportId, int minutes) {
+        Optional<Report> optionalReport = reportRepository.findById(reportId);
+        if (optionalReport.isPresent()) {
+            Report report = optionalReport.get();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(report.getExpirationDate());
+            calendar.add(Calendar.MINUTE, minutes);
+
+            report.setExpirationDate(calendar.getTime());
+
+            reportRepository.save(report);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean rewindExpirationTime(Long reportId, int minutes) {
+        Optional<Report> optionalReport = reportRepository.findById(reportId);
+        if (optionalReport.isPresent()) {
+            Report report = optionalReport.get();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(report.getExpirationDate());
+            calendar.add(Calendar.MINUTE, -minutes);
+
+            report.setExpirationDate(calendar.getTime());
+
+            reportRepository.save(report);
+            return true;
+        }
+        return false;
+    }
 }

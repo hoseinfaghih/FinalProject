@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +36,24 @@ public class ReportController {
         } else {
             return ResponseEntity.badRequest().body("something wrong happened!");
         }
+    }
+
+    @PutMapping("/like/{id}")
+    public ResponseEntity<Object> likeReport (@PathVariable Long id){
+        Boolean check = reportService.advanceExpirationTime(id,1);
+        if(check){
+            return ResponseEntity.ok("Thank you for your contribution!");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping ("/dislike/{id}")
+    public ResponseEntity<Object> dislikeReport (@PathVariable Long id){
+        Boolean check = reportService.rewindExpirationTime(id,1);
+        if(check){
+            return ResponseEntity.ok("Thank you for your contribution!");
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
