@@ -22,6 +22,7 @@ public class AdminController {
         String result = reportService.approveReports(reportIds);
         return ResponseEntity.ok(result);
     }
+
     @PostMapping("/disapprove")
     public ResponseEntity<Object> disapproveReports(@RequestBody ApproveList approveList) {
         List<Long> reportIds = approveList.getIds();
@@ -30,13 +31,13 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ReportResponse>> getAllReports() {
-        List<ReportResponse> result = reportService.getAllReports();
+    public ResponseEntity<List<ReportResponse>> getFilteredReports(
+            @RequestParam(name = "approve", required = false) Boolean approve,
+            @RequestParam(name = "alive", required = false) Boolean alive) {
+
+        List<ReportResponse> result = reportService.getFilteredReports(approve,alive);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/all-alive")
-    public ResponseEntity<List<ReportResponse>> getAllAliveReports() {
-        return ResponseEntity.ok(reportService.getAllAliveReports());
-    }
+
 }

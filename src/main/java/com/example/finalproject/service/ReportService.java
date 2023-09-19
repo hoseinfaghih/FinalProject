@@ -43,7 +43,7 @@ public class ReportService {
 
         Calendar calendar = Calendar.getInstance();
         Date now = calendar.getTime();
-        calendar.add(Calendar.MINUTE, 10);
+        calendar.add(Calendar.MINUTE, 1);
         Date futureDate = calendar.getTime();
 
         Report report = reportMapper.createReport(user, type, innerType, point, now, futureDate);
@@ -54,8 +54,30 @@ public class ReportService {
         return false;
     }
 
-    public List<ReportResponse> getAllReports() {
-        List<Report> result = reportRepository.findAll();
+    public List<ReportResponse> getFilteredReports(Boolean approve, Boolean alive) {
+        List<Report> result = new ArrayList<>();
+        Date now = new Date();
+        if (approve == null && alive == null) {
+            result = reportRepository.findAll();
+        } else if (approve == null && !alive) {
+            result = reportRepository.findByExpirationDateBefore(now);
+        } else if (approve == null && alive) {
+            result = reportRepository.findByExpirationDateAfter(now);
+        } else if (!approve && alive == null) {
+            result = reportRepository.findByApproveFalse();
+        } else if (!approve  && !alive ) {
+            result = reportRepository.findByApproveFalseAndExpirationDateBefore(now);
+        } else if (!approve  && alive ) {
+            result = reportRepository.findByApproveFalseAndExpirationDateAfter(now);
+        } else if (approve && alive == null) {
+            result = reportRepository.findByApproveTrue();
+        } else if (approve  && !alive) {
+            result = reportRepository.findByApproveTrueAndExpirationDateBefore(now);
+        } else if (approve && alive ) {
+            result = reportRepository.findByApproveTrueAndExpirationDateAfter(now);
+        }
+
+
         List<ReportResponse> realResult = new ArrayList<>();
         for (Report report : result) {
             ReportResponse reportResponse = reportMapper.convertReportToReportResponse(report);
@@ -107,25 +129,26 @@ public class ReportService {
         return disapproveReportsResult(result);
     }
 
-    private String approveReportsResult (Map<String,List<Long>> map){
+    private String approveReportsResult(Map<String, List<Long>> map) {
         StringBuilder responseBody = new StringBuilder("ids : ");
-        for (Long goodId:map.get("good")) {
+        for (Long goodId : map.get("good")) {
             responseBody.append(goodId.toString()).append(",");
         }
         responseBody.append(" \nwere good and approved!\nbut ids :");
-        for (Long goodId:map.get("bad")) {
+        for (Long goodId : map.get("bad")) {
             responseBody.append(goodId.toString()).append(",");
         }
         responseBody.append(" \nwere bad and didn't exist");
         return responseBody.toString();
     }
-    private String disapproveReportsResult (Map<String,List<Long>> map){
+
+    private String disapproveReportsResult(Map<String, List<Long>> map) {
         StringBuilder responseBody = new StringBuilder("ids : ");
-        for (Long goodId:map.get("good")) {
+        for (Long goodId : map.get("good")) {
             responseBody.append(goodId.toString()).append(",");
         }
         responseBody.append(" \nwere good and disapproved!\nbut ids :");
-        for (Long goodId:map.get("bad")) {
+        for (Long goodId : map.get("bad")) {
             responseBody.append(goodId.toString()).append(",");
         }
         responseBody.append(" \nwere bad and didn't exist");

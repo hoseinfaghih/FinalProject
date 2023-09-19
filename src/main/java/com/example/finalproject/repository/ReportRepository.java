@@ -13,9 +13,24 @@ import java.util.Optional;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findAll();
+    List<Report> findAll(); // approve == null && alive == null
 
-    List<Report> findByExpirationDateAfter(Date currentDate);
+    List<Report> findByExpirationDateAfter(Date currentDate); // approve == null && alive == true
+
+    List<Report> findByExpirationDateBefore(Date currentDate); // approve == null && alive == false
+
+    List<Report> findByApproveTrue(); // approve == true && alive == null
+
+    List<Report> findByApproveFalse();// approve == false && alive == null
+
+    List<Report> findByApproveFalseAndExpirationDateBefore(Date currentDate); // approve == false && alive == false
+
+    List<Report> findByApproveFalseAndExpirationDateAfter(Date currentDate); // approve == false && alive == true
+
+    List<Report> findByApproveTrueAndExpirationDateBefore (Date currentDate); // approve == true && alive == false
+
+    List<Report> findByApproveTrueAndExpirationDateAfter(Date currentDate);
+
 
     Optional<Report> findById(Long id);
 
