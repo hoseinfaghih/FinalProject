@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,19 @@ public class ReportService {
     public Boolean addReport(User user, SubmitReportDto submitReportDto) {
         String uniqueIdentifier = submitReportDto.toString().replaceAll("\\s", "");
         RedissonClient redissonClient = redisConfig.redissonClient();
-        RMap<String,String> map = redissonClient.getMap(uniqueIdentifier);
-        map.put(uniqueIdentifier,"YES");
-        map.expire(2,TimeUnit.MINUTES);
+//        RLock lock = redissonClient.getLock(uniqueIdentifier);
+//        try{
+//            lock.lock();
+//            RMap<String, String> map = redissonClient.getMap(uniqueIdentifier);
+//            map.put(uniqueIdentifier, "YES");
+//            map.expire(2, TimeUnit.MINUTES);
+//        }finally {
+//            lock.unlock();
+//        }
+        RMap<String, String> map = redissonClient.getMap(uniqueIdentifier);
+        map.put(uniqueIdentifier, "YES");
+        map.expire(2, TimeUnit.MINUTES);
+
 
         String type = submitReportDto.getType();
         String innerType = submitReportDto.getInnerType();
@@ -205,9 +216,20 @@ public class ReportService {
     public boolean checkDuplicate(SubmitReportDto submitReportDto) {
         String uniqueIdentifier = submitReportDto.toString().replaceAll("\\s", "");
         RedissonClient redissonClient = redisConfig.redissonClient();
-        RMap <String,String> map = redissonClient.getMap(uniqueIdentifier);
+        RLock lock = redissonClient.getLock(uniqueIdentifier);
         boolean result = false;
-        if (map.keySet().contains(uniqueIdentifier)){
+//        try {
+//            lock.lock();
+//            RMap<String, String> map = redissonClient.getMap(uniqueIdentifier);
+//            if (map.keySet().contains(uniqueIdentifier)) {
+//                result = true;
+//            }
+//        }finally {
+//            lock.unlock();
+//        }
+
+        RMap<String, String> map = redissonClient.getMap(uniqueIdentifier);
+        if (map.containsKey(uniqueIdentifier)) {
             result = true;
         }
         return result;

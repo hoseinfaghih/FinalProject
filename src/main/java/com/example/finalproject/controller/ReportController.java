@@ -32,7 +32,7 @@ public class ReportController {
         if (!submitReportDto.getType().equals("SpeedHump") && submitReportDto.getInnerType() == null) {
             return ResponseEntity.badRequest().body("no InnerType !!");
         }
-        if (reportService.checkDuplicate(submitReportDto)){
+        if (reportService.checkDuplicate(submitReportDto)) {
             return ResponseEntity.ok("Your Request not Stored in db because we added something like it recently!");
         }
         Boolean result = reportService.addReport(user, submitReportDto);
