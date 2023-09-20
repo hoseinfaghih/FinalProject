@@ -11,10 +11,11 @@ import java.util.Optional;
 public interface AccidentReportRepository extends JpaRepository<AccidentReport, Long> {
     Optional<AccidentReport> findById(Long id);
 
-    @Query(value = "SELECT EXTRACT(HOUR FROM issue_date) AS hour_of_day, COUNT(*) AS accident_count " +
+    @Query(value = "SELECT EXTRACT(HOUR FROM issue_date) AS hour_of_day " +
             "FROM accident_reports " +
+            "WHERE is_approved = false " +
             "GROUP BY hour_of_day " +
-            "ORDER BY accident_count " +
+            "ORDER BY COUNT(*) " +
             "DESC LIMIT 1", nativeQuery = true)
     Integer findHourWithMostAccidents();
 

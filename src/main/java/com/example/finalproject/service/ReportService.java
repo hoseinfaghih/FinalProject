@@ -1,5 +1,6 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.config.RedisConfig;
 import com.example.finalproject.dto.ReportResponse;
 import com.example.finalproject.dto.SubmitReportDto;
 import com.example.finalproject.dto.mapper.ReportMapper;
@@ -8,15 +9,23 @@ import com.example.finalproject.model.User;
 import com.example.finalproject.repository.ReportRepository;
 import com.example.finalproject.repository.reports.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.redisson.api.RBucket;
+import org.redisson.api.RLock;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReportService {
     private final ReportRepository reportRepository;
     private final TrafficReportRepository trafficReportRepository;
@@ -29,6 +38,7 @@ public class ReportService {
     private final RoadIncidentReportRepository roadIncidentReportRepository;
     private final WeatherReportRepository weatherReportRepository;
     private final ReportMapper reportMapper;
+    private final RedisConfig redisConfig;
 
     public Boolean addReport(User user, SubmitReportDto submitReportDto) {
         String type = submitReportDto.getType();
@@ -188,4 +198,5 @@ public class ReportService {
         }
         return false;
     }
+
 }
