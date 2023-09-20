@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/FinalProject
+    username: postgres
+    password: 7254033FGh
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+application:
+  security:
+    jwt:
+      secret-key: ReawF+IwL1bLscgeiyVFbikseTJkbC4OlVy20UAm28Ch2Yv03aY6mp8yO+bZCg2E
+      expiration: 86400000
