@@ -85,84 +85,84 @@ public class ReportMapper {
         return reportResponse;
     }
 
-    public Report createReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    public Report createReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         return switch (type) {
-            case "Traffic" -> createTrafficReport(user, type, innerType, point, now, futureDate,approve);
-            case "Camera" -> createCameraReport(user, type, innerType, point, now, futureDate,approve);
-            case "Accident" -> createAccidentReport(user, type, innerType, point, now, futureDate,approve);
-            case "Police" -> createPoliceReport(user, type, innerType, point, now, futureDate,approve);
-            case "SpeedHump" -> createSpeedHumpReport(user, type, point, now, futureDate,approve);
-            case "MapProblem" -> createMapProblemReport(user, type, innerType, point, now, futureDate,approve);
-            case "RoadIncident" -> createRoadIncidentReport(user, type, innerType, point, now, futureDate,approve);
-            case "RoadLocation" -> createRoadLocationReport(user, type, innerType, point, now, futureDate,approve);
-            case "Weather" -> createWeatherReport(user, type, innerType, point, now, futureDate,approve);
+            case "Traffic" -> createTrafficReport(user, type, innerType, point, now, futureDate, approve);
+            case "Camera" -> createCameraReport(user, type, innerType, point, now, futureDate, approve);
+            case "Accident" -> createAccidentReport(user, type, innerType, point, now, futureDate, approve);
+            case "Police" -> createPoliceReport(user, type, innerType, point, now, futureDate, approve);
+            case "SpeedHump" -> createSpeedHumpReport(user, type, point, now, futureDate, approve);
+            case "MapProblem" -> createMapProblemReport(user, type, innerType, point, now, futureDate, approve);
+            case "RoadIncident" -> createRoadIncidentReport(user, type, innerType, point, now, futureDate, approve);
+            case "RoadLocation" -> createRoadLocationReport(user, type, innerType, point, now, futureDate, approve);
+            case "Weather" -> createWeatherReport(user, type, innerType, point, now, futureDate, approve);
             default -> null;
         };
     }
 
-    private TrafficReport createTrafficReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private TrafficReport createTrafficReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         TrafficReport trafficReport = new TrafficReport();
-        setCommonAttributes(trafficReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(trafficReport, user, type, point, now, futureDate, approve);
         trafficReport.setTrafficType(TrafficType.valueOf(innerType));
         return trafficReport;
     }
 
-    private CameraReport createCameraReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private CameraReport createCameraReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         CameraReport cameraReport = new CameraReport();
-        setCommonAttributes(cameraReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(cameraReport, user, type, point, now, futureDate, approve);
         cameraReport.setCameraType(CameraType.valueOf(innerType));
         return cameraReport;
     }
 
-    private AccidentReport createAccidentReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private AccidentReport createAccidentReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         AccidentReport accidentReport = new AccidentReport();
-        setCommonAttributes(accidentReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(accidentReport, user, type, point, now, futureDate, approve);
         accidentReport.setAccidentType(AccidentType.valueOf(innerType));
         return accidentReport;
     }
 
-    private PoliceReport createPoliceReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private PoliceReport createPoliceReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         PoliceReport policeReport = new PoliceReport();
-        setCommonAttributes(policeReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(policeReport, user, type, point, now, futureDate, approve);
         policeReport.setPoliceType(PoliceType.valueOf(innerType));
         return policeReport;
     }
 
-    private SpeedHumpReport createSpeedHumpReport(User user, String type, Point point, Date now, Date futureDate,Boolean approve) {
+    private SpeedHumpReport createSpeedHumpReport(User user, String type, Point point, Date now, Date futureDate, Boolean approve) {
         SpeedHumpReport speedHumpReport = new SpeedHumpReport();
-        setCommonAttributes(speedHumpReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(speedHumpReport, user, type, point, now, futureDate, approve);
         return speedHumpReport;
     }
 
-    private MapProblemReport createMapProblemReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private MapProblemReport createMapProblemReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         MapProblemReport mapProblemReport = new MapProblemReport();
-        setCommonAttributes(mapProblemReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(mapProblemReport, user, type, point, now, futureDate, approve);
         mapProblemReport.setMapProblemType(MapProblemType.valueOf(innerType));
         return mapProblemReport;
     }
 
-    private RoadIncidentReport createRoadIncidentReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private RoadIncidentReport createRoadIncidentReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         RoadIncidentReport roadIncidentReport = new RoadIncidentReport();
-        setCommonAttributes(roadIncidentReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(roadIncidentReport, user, type, point, now, futureDate, approve);
         roadIncidentReport.setRoadIncidentType(RoadIncidentType.valueOf(innerType));
         return roadIncidentReport;
     }
 
-    private RoadLocationReport createRoadLocationReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private RoadLocationReport createRoadLocationReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         RoadLocationReport roadLocationReport = new RoadLocationReport();
-        setCommonAttributes(roadLocationReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(roadLocationReport, user, type, point, now, futureDate, approve);
         roadLocationReport.setRoadLocationType(RoadLocationType.valueOf(innerType));
         return roadLocationReport;
     }
 
-    private WeatherReport createWeatherReport(User user, String type, String innerType, Point point, Date now, Date futureDate,Boolean approve) {
+    private WeatherReport createWeatherReport(User user, String type, String innerType, Point point, Date now, Date futureDate, Boolean approve) {
         WeatherReport weatherReport = new WeatherReport();
-        setCommonAttributes(weatherReport, user, type, point, now, futureDate,approve);
+        setCommonAttributes(weatherReport, user, type, point, now, futureDate, approve);
         weatherReport.setWeatherType(WeatherType.valueOf(innerType));
         return weatherReport;
     }
 
-    private void setCommonAttributes(Report report, User user, String type, Point point, Date now, Date futureDate,Boolean approve) {
+    private void setCommonAttributes(Report report, User user, String type, Point point, Date now, Date futureDate, Boolean approve) {
         report.setApprove(approve);
         report.setLocation(point);
         report.setUser(user);

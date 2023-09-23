@@ -37,6 +37,7 @@ public class ReportService {
     private final Calendar calendar;
     private final GeometryFactory geometryFactory;
     private final ReportProperties reportProperties;
+
     public Boolean addReport(User user, SubmitReportDto submitReportDto) {
         String uniqueIdentifier = submitReportDto.toString().replaceAll("\\s", "");
 //        RedissonClient redissonClient = redisConfig.redissonClient();
@@ -64,54 +65,53 @@ public class ReportService {
         Coordinate coordinate = new Coordinate(x, y);
         Point point = geometryFactory.createPoint(coordinate);
         point.setSRID(4326);
-
+        calendar.clear();
+        calendar.setTime(new Date());
         Date now = calendar.getTime();
         Boolean approve = null;
-        switch (type){
+        switch (type) {
             case "Traffic":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("traffic"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("traffic"));
                 approve = reportProperties.getApprove().get("traffic");
                 break;
             case "Accident":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("accident"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("accident"));
                 approve = reportProperties.getApprove().get("accident");
                 break;
             case "Camera":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("camera"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("camera"));
                 approve = reportProperties.getApprove().get("camera");
                 break;
             case "MapProblem":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("map-problem"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("map-problem"));
                 approve = reportProperties.getApprove().get("map-problem");
                 break;
             case "Police":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("police"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("police"));
                 approve = reportProperties.getApprove().get("police");
                 break;
             case "RoadIncident":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("road-incident"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("road-incident"));
                 approve = reportProperties.getApprove().get("road-incident");
                 break;
             case "RoadLocation":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("road-location"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("road-location"));
                 approve = reportProperties.getApprove().get("road-location");
                 break;
             case "SpeedHump":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("speed-hump"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("speed-hump"));
                 approve = reportProperties.getApprove().get("speed-hump");
                 break;
             case "Weather":
-                calendar.add(Calendar.MINUTE,reportProperties.getExpiration().get("weather"));
+                calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("weather"));
                 approve = reportProperties.getApprove().get("weather");
                 break;
         }
 
 
-        calendar.add(Calendar.MINUTE, reportProperties.getExpiration().get("traffic"));
-        //log.info(reportProperties.getExpiration().get("traffic").toString());
         Date futureDate = calendar.getTime();
 
-        Report report = reportMapper.createReport(user, type, innerType, point, now, futureDate,approve);
+        Report report = reportMapper.createReport(user, type, innerType, point, now, futureDate, approve);
         if (report != null) {
             reportRepository.save(report);
             return true;
@@ -210,39 +210,6 @@ public class ReportService {
         return responseBody.toString();
     }
 
-    public Boolean advanceExpirationTime(Long reportId, int minutes) {
-        Optional<Report> optionalReport = reportRepository.findById(reportId);
-        if (optionalReport.isPresent()) {
-            Report report = optionalReport.get();
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(report.getExpirationDate());
-            calendar.add(Calendar.MINUTE, minutes);
-
-            report.setExpirationDate(calendar.getTime());
-
-            reportRepository.save(report);
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean rewindExpirationTime(Long reportId, int minutes) {
-        Optional<Report> optionalReport = reportRepository.findById(reportId);
-        if (optionalReport.isPresent()) {
-            Report report = optionalReport.get();
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(report.getExpirationDate());
-            calendar.add(Calendar.MINUTE, -minutes);
-
-            report.setExpirationDate(calendar.getTime());
-
-            reportRepository.save(report);
-            return true;
-        }
-        return false;
-    }
 
     public boolean checkDuplicate(SubmitReportDto submitReportDto) {
         String uniqueIdentifier = submitReportDto.toString().replaceAll("\\s", "");
