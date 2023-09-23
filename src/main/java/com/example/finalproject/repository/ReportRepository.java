@@ -47,7 +47,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     @Query("SELECT r " +
             "FROM Report r " +
-            "WHERE ST_DWithin(r.location, :lineString,10,true) = true  " +
+            "WHERE ST_DWithin(ST_Transform(r.location, 3857),ST_Transform(:lineString, 3857),10) = true  " +
             "AND r.approve = true AND r.expirationDate > :currentDate")
     List<Report> findAliveAndApprovedReportsWithinLineString(LineString lineString,Date currentDate);
 }
