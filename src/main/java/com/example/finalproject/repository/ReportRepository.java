@@ -45,6 +45,9 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query("UPDATE Report r SET r.approve = false WHERE r.id = :reportId")
     void disapproveReportById(Long reportId);
 
-    @Query("SELECT r FROM Report r WHERE ST_DWithin(r.location, :lineString,10,true) = true  AND r.approve = true AND r.expirationDate > :currentDate")
+    @Query("SELECT r " +
+            "FROM Report r " +
+            "WHERE ST_DWithin(r.location, :lineString,10,true) = true  " +
+            "AND r.approve = true AND r.expirationDate > :currentDate")
     List<Report> findAliveAndApprovedReportsWithinLineString(LineString lineString,Date currentDate);
 }

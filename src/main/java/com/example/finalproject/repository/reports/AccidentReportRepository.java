@@ -13,7 +13,7 @@ public interface AccidentReportRepository extends JpaRepository<AccidentReport, 
 
     @Query(value = "SELECT EXTRACT(HOUR FROM issue_date) AS hour_of_day " +
             "FROM accident_reports " +
-            "WHERE is_approved = false " +
+            "WHERE is_approved = true " +
             "GROUP BY hour_of_day " +
             "ORDER BY COUNT(*) " +
             "DESC LIMIT 1", nativeQuery = true)
