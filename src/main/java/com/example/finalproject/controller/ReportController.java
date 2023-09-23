@@ -43,23 +43,7 @@ public class ReportController {
         }
     }
 
-    @PutMapping("/like/{id}")
-    public ResponseEntity<Object> likeReport(@PathVariable Long id) {
-        Boolean check = reportService.advanceExpirationTime(id, 1);
-        if (check) {
-            return ResponseEntity.ok("Thank you for your contribution!");
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @PutMapping("/dislike/{id}")
-    public ResponseEntity<Object> dislikeReport(@PathVariable Long id) {
-        Boolean check = reportService.rewindExpirationTime(id, 1);
-        if (check) {
-            return ResponseEntity.ok("Thank you for your contribution!");
-        }
-        return ResponseEntity.notFound().build();
-    }
 
 
 }

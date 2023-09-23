@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.locationtech.jts.geom.Point;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -41,4 +42,13 @@ public abstract class Report {
 
     @Column(name = "is_approved")
     Boolean approve;
+
+    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    private List<LikeDislike> likesDislikes;
+
+    @Column(name = "like_count")
+    private int likeCount;
+
+    @Column(name = "dislike_count")
+    private int dislikeCount;
 }

@@ -20,3 +20,26 @@ application:
     jwt:
       secret-key: ReawF+IwL1bLscgeiyVFbikseTJkbC4OlVy20UAm28Ch2Yv03aY6mp8yO+bZCg2E
       expiration: 86400000
+
+report:
+  expiration: #in minutes
+    accident: 30
+    traffic: 30
+    map-problem: 60
+    police: 1440 # 1 week
+    road-indcident: 525600 #1 year
+    road-location: 525600 #1 year
+    speed-hump: 525600 #1 year
+    weather: 360 #6 hours
+    camera: 525600 #1 year
+
+  approve :
+    accident: true
+    traffic: true
+    map-problem: true
+    police: true
+    road-indcident: false
+    road-location: false
+    speed-hump: false
+    weather: false
+    camera: false
